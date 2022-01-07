@@ -10,6 +10,52 @@ as expected with different providers. A provider in Qiskit is a package that
 provides [backend](https://qiskit.org/documentation/stubs/qiskit.providers.BackendV2.html)
 objects that provide an interface to Quantum hardware or a simulator.
 
+## Installing qiskit-neko
+
+Currently qiskit-neko is not designed to run as a standalone package and you
+need to checkout the git source repository to run it. This is done to simplify
+the execution of the tests as qiskit-neko leverages the
+[``stestr``](https://github.com/mtreinish/stestr) for the execution of its
+tests. To install qiskit-neko you need to first clone it with
+[git](https://git-scm.com/):
+
+```
+git clone https://github.com/mtreinish/qiskit-neko.git
+```
+
+then you can install it using pip into your python environment
+
+```
+pip install .
+```
+
+Eventually a mode with a standalone package might be added, but for now this
+is how you need to install qiskit-neko.
+
+## Running tests
+
+The simplest way to run the qiskit-neko test suite is to leverage
+[``tox``](https://tox.wiki/en/latest/). The ``neko`` tox job is configured
+to install qiskit-neko and then run the full test suite. After installing
+``tox`` (typically done with ``pip install tox``) you can simply run:
+
+```
+tox -e neko
+```
+
+and this will install qiskit-neko into an isolated virtual environment and
+then run tests.
+
+If you don't wish to use tox to run tests. You can leverage ``stestr`` directly
+to execute tests. Simply running:
+
+```
+stestr run
+```
+
+from the root of repository after installing qiskit-neko in your python
+environment.
+
 ## Qiskit Version compatibility
 
 Due to its use for backwards compatibility testing there are strict requirements

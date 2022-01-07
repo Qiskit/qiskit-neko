@@ -19,6 +19,17 @@ LOG = logging.getLogger(__name__)
 
 
 class BackendPlugin(abc.ABC):
+    """Abstract class for providing :class:`~qiskit.providers.Backend` objects to tests
+
+    This class is designed to be implemented by qiskit providers packages or any
+    other user that needs to provide custom backend objects to the test suite.
+    In general the authentication and initialization of working with backends
+    from different vendors or with different simulators are all unique
+    qiskit-neko provides the backend plugin interface to enable a standard
+    interface to return backend objects and leave the specifics of
+    authentication or initialization of providers.
+    """
+
     @abc.abstractmethod
     def get_backend(self, backend_selection=None):
         """Return the Backend object to run tests on.
@@ -35,6 +46,8 @@ class BackendPlugin(abc.ABC):
 
 
 class BackendPluginManager:
+    """Class to manage installed backend plugins"""
+
     def __init__(self):
         self.ext_plugins = stevedore.ExtensionManager(
             "qiskit_neko.backend_plugins",
