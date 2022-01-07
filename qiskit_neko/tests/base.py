@@ -243,14 +243,29 @@ def enforce_subclasses_call(methods, attr="_enforce_subclasses_call_cache"):
     return decorator
 
 
+def _iter_loggers():
+    """Iterate on existing loggers."""
+
+    # Sadly, Logger.manager and Manager.loggerDict are not documented,
+    # but there is no logging public function to iterate on all loggers.
+
+    # The root logger is not part of loggerDict.
+    yield logging.getLogger()
+
+    manager = logging.Logger.manager
+    for logger in manager.loggerDict.values():
+        if isinstance(logger, logging.PlaceHolder):
+            continue
+        yield logger
+
+
 @enforce_subclasses_call(["setUp", "setUpClass", "tearDown", "tearDownClass"])
 class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
-    log_format = "%(asctime)s %(process)d %(levelname)-8s [%(name)s] %(message)s"
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__setup_called = False
         self.__teardown_called = False
+        self.log_format = "%(asctime)s %(process)d %(levelname)-8s [%(name)s] %(message)s"
 
     def setUp(self):
         super().setUp()
@@ -267,12 +282,36 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         self.useFixture(fixtures.MonkeyPatch("sys.stdout", stdout))
         stderr = self.useFixture(fixtures.StringStream("stderr")).stream
         self.useFixture(fixtures.MonkeyPatch("sys.stderr", stderr))
-        self.useFixture(
-            fixtures.LoggerFixture(nuke_handlers=False, format=self.log_format, level=None)
-        )
-        # Load configuration and set backends
+        # Load configuration
         self.config = None
         self.find_config_file()
+        # Configure logging
+        default_log_level = None
+        module_log_levels = None
+        if self.config:
+            default_log_level = self.config.config.get("default_log_level", None)
+            self.log_format = self.config.config.get("log_format", self.log_format)
+            module_log_levels = self.config.config.get("module_log_level", {})
+            log_file = self.config.config.get("log_file", None)
+            if log_file:
+                file_handler = logging.FileHandler(log_file)
+                formatter = logging.Formatter(self.log_format)
+                file_handler.setFormatter(formatter)
+                if default_log_level:
+                    file_handler.setLevel(default_log_level)
+                logging.getLogger("").addHandler(file_handler)
+
+        self.useFixture(
+            fixtures.LoggerFixture(
+                nuke_handlers=False, format=self.log_format, level=default_log_level
+            )
+        )
+        if module_log_levels:
+            for mod, level in module_log_levels.items():
+                logger = logging.getLogger(mod)
+                logger.setLevel(level)
+
+        # Set backend
         self.plugin_manager = backend_plugin.BackendPluginManager()
         if self.config:
             backend_script_path = self.config.config.get("backend_script", None)
@@ -287,7 +326,7 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         else:
             self.backends = backend_plugin.BackendPluginManager().get_plugin_backends()
             self.backend = self.backends["aer"]
-        # set test timeout
+        # Set test timeout
         test_timeout = os.environ.get("NEKO_TEST_TIMEOUT", 0)
         try:
             test_timeout = int(test_timeout)

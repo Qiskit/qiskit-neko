@@ -21,12 +21,19 @@ import yaml
 
 LOG = logging.getLogger(__name__)
 
+LOG_LEVEL_VALIDATOR = vol.Any("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
+
+
 schema = vol.Schema(
     {
-        vol.Optional("test_timeout", default=-1): float,
+        vol.Optional("test_timeout"): vol.Coerce(float),
         vol.Optional("backend_plugin", default="aer"): str,
-        vol.Optional("backend_selection", default=""): str,
-        vol.Optional("backend_script", default=""): str,
+        vol.Optional("backend_selection"): str,
+        vol.Optional("backend_script"): str,
+        vol.Optional("default_log_level", default="INFO"): LOG_LEVEL_VALIDATOR,
+        vol.Optional("module_log_level"): {vol.Extra: LOG_LEVEL_VALIDATOR},
+        vol.Optional("log_format"): str,
+        vol.Optional("log_file"): str,
     }
 )
 
