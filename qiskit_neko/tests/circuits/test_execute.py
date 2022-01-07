@@ -10,6 +10,10 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+"""Test backend on execute()."""
+
+import math
+
 from qiskit.circuit import QuantumCircuit
 from qiskit import execute
 
@@ -17,12 +21,49 @@ from qiskit_neko.tests import base
 
 
 class TestExecute(base.BaseTestCase):
-    def test_bell_execute(self):
+    """Test the use of the execute() method in qiskit-terra."""
+
+    def setUp(self):
+        super().setUp()
+        if not hasattr(self.backend.options, "shots"):
+            raise self.skipException(
+                "Provided backend {self.backend} does not have a configurable shots option"
+            )
+
+    def test_bell_execute_fixed_shots(self):
+        """Test the execution of a bell circuit with an explicit shot count."""
         circuit = QuantumCircuit(2)
         circuit.h(0)
         circuit.cx(0, 1)
         circuit.measure_all()
-        job = execute(circuit, self.backend, shots=1000)
+        job = execute(circuit, self.backend, shots=100)
         result = job.result()
         counts = result.get_counts()
-        self.assertDictAlmostEqual(counts, {"00": 500, "11": 500}, delta=100)
+        self.assertDictAlmostEqual(counts, {"00": 50, "11": 50}, delta=10)
+
+    def test_bell_execute_default_shots(self):
+        """Test the execution of a bell circuit with an explicit shot count."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+        circuit.measure_all()
+        expected_count = self.backend.options.shots / 2
+        job = execute(circuit, self.backend)
+        result = job.result()
+        counts = result.get_counts()
+        delta = 10 ** (math.log10(self.backend.options.shots) - 1)
+        self.assertDictAlmostEqual(
+            counts, {"00": expected_count, "11": expected_count}, delta=delta
+        )
+
+    def test_bell_execute_backend_shots_set_option(self):
+        """Test the execution of a bell circuit with an explicit shot count set via options."""
+        circuit = QuantumCircuit(2)
+        circuit.h(0)
+        circuit.cx(0, 1)
+        circuit.measure_all()
+        self.backend.set_option("shots", 100)
+        job = execute(circuit, self.backend)
+        result = job.result()
+        counts = result.get_counts()
+        self.assertDictAlmostEqual(counts, {"00": 50, "11": 50}, delta=10)
