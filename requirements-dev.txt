@@ -1,0 +1,9 @@
+black==21.12b0
+astroid==2.9.2
+pylint==2.12.2
+Sphinx>=3.0.0
+qiskit-sphinx-theme>=1.6
+sphinx-autodoc-typehints
+jupyter-sphinx
+pygments>=2.4
+reno>=3.4.0

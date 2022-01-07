@@ -1,0 +1,8 @@
+qiskit
+stestr>=3.2.0
+testtools>=2.5.0
+fixtures>=3.0.0
+ddt>=1.4.4
+stevedore>=3.5.0
+PyYAML>=6.0
+voluptuous>=0.12.0
