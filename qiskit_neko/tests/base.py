@@ -316,12 +316,12 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         if self.config:
             backend_script_path = self.config.config.get("backend_script", None)
             backend_selection = self.config.config.get("backend_selection", None)
-            if "backend_script" is not None:
+            if backend_script_path is not None:
                 plugin = self.load_plugin_script(backend_script_path)
                 self.backend = plugin.get_backend(backend_selection)
             else:
                 plugin = self.config.config.get("backend_plugin", "aer")
-                self.backends = self.plugin_manager().get_plugin_backends(backend_selection)
+                self.backends = self.plugin_manager.get_plugin_backends(backend_selection)
                 self.backend = self.backends[plugin]
         else:
             self.backends = backend_plugin.BackendPluginManager().get_plugin_backends()

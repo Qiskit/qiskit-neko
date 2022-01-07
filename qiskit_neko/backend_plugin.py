@@ -48,6 +48,9 @@ class BackendPluginManager:
         LOG.error("Could not load %r: %s", ep.name, err)
         raise err
 
-    def get_plugin_backends(self):
+    def get_plugin_backends(self, backend_selection=None):
         """Return a dictionary of plugin names to backend objects."""
-        return {plug.name: plug.obj.get_backend() for plug in self.ext_plugins}
+        return {
+            plug.name: plug.obj.get_backend(backend_selection=backend_selection)
+            for plug in self.ext_plugins
+        }
