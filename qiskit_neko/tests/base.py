@@ -10,10 +10,13 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+"""Base test class for qiskit-neko framework."""
+
 import inspect
 import importlib.util
 import logging
 import os
+import sys
 
 import testtools
 import fixtures
@@ -60,10 +63,10 @@ def dicts_almost_equal(dict1, dict2, delta=None, places=None, default_value=0):
     if places is not None:
         if delta is not None:
             raise TypeError("specify delta or places not both")
-        msg_suffix = " within %s places" % places
+        msg_suffix = f" within {places} places"
     else:
         delta = delta or 1e-8
-        msg_suffix = " within %s delta" % delta
+        msg_suffix = f" within {delta} delta"
 
     # Compare all keys in both dicts, populating error_msg.
     error_msg = ""
@@ -165,10 +168,10 @@ def enforce_subclasses_call(methods, attr="_enforce_subclasses_call_cache"):
     grandchildren if a child class overrides ``__init_subclass__`` without up-calling the decorated
     class's method, though this would typically break inheritance principles.
     Arguments:
-        methods:
+        methods (str or list):
             Names of the methods to add the enforcement to.  These do not necessarily need to be
             defined in the class body, provided they are somewhere in the method-resolution tree.
-        attr:
+        attr (str):
             The attribute which will be added to all instances of this class and subclasses, in
             order to manage the call enforcement.  This can be changed to avoid clashes.
     Returns:
@@ -261,6 +264,8 @@ def _iter_loggers():
 
 @enforce_subclasses_call(["setUp", "setUpClass", "tearDown", "tearDownClass"])
 class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
+    """Qiskit Neko base test class."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__setup_called = False
@@ -271,10 +276,10 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         super().setUp()
         if self.__setup_called:
             raise ValueError(
-                "In File: %s\n"
+                f"In File: {sys.modules[self.__class__.__module__].__file__}\n"
                 "TestCase.setUp was already called. Do not explicitly call "
                 "setUp from your tests. In your own setUp, use super to call "
-                "the base setUp." % (sys.modules[self.__class__.__module__].__file__,)
+                "the base setUp."
             )
         self.__setup_called = True
         # Setup output fixtures:
@@ -339,21 +344,24 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
             self.useFixture(fixtures.Timeout(test_timeout, gentle=True))
 
     def load_plugin_script(self, path):
+        """Load plugin from user specified script file."""
         spec = importlib.util.spec_from_file_location("backend_script", path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module.main()
 
     def find_config_file(self):
+        """Find a config file to use and load."""
         env_var = os.getenv("NekoConfigPath", None)
         if env_var is not None:
             if not os.path.isfile(env_var):
                 LOG.warning(
-                    f"NekoConfigPath environment variable set to {env_var}, however no file "
-                    "exists at this path. This value is being ignored."
+                    "NekoConfigPath environment variable set to %s, however no file "
+                    "exists at this path. This value is being ignored.",
+                    env_var,
                 )
             else:
-                self.config = config.NekoConfig(path)
+                self.config = config.NekoConfig(env_var)
                 return
         default_filename = "neko_config.yml"
         home_dir = os.path.expanduser("~")
@@ -365,17 +373,17 @@ class BaseTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         ]
         for path in search_locations:
             if os.path.isfile(path):
-                LOG.info(f"Loading configuration file from {path}")
+                LOG.info("Loading configuration file from %s", path)
                 self.config = config.NekoConfig(path)
 
     def tearDown(self):
         super().tearDown()
         if self.__teardown_called:
             raise ValueError(
-                "In File: %s\n"
+                f"In File: {sys.modules[self.__class__.__module__].__file__}\n"
                 "TestCase.tearDown was already called. Do not explicitly call "
                 "tearDown from your tests. In your own tearDown, use super to "
-                "call the base tearDown." % (sys.modules[self.__class__.__module__].__file__,)
+                "call the base tearDown."
             )
         self.__teardown_called = True
 

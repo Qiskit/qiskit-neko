@@ -10,6 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# pylint: disable=missing-class-docstring,missing-function-docstring
+
 """Test configuration files."""
 
 import unittest
@@ -24,7 +26,7 @@ class TestConfig(unittest.TestCase):
         mock_open = unittest.mock.mock_open(read_data="")
         with unittest.mock.patch("qiskit_neko.config.open", mock_open):
             with self.assertRaises(vol.MultipleInvalid):
-                config_obj = config.NekoConfig("fake_path")
+                config.NekoConfig("fake_path")
 
     def test_load_config_fully_populated(self):
         data = """---

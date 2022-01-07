@@ -10,6 +10,11 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+# pylint: disable=invalid-name
+
+"""Backend plugin interface."""
+
+
 import abc
 import logging
 
@@ -58,6 +63,7 @@ class BackendPluginManager:
 
     @staticmethod
     def failure_hook(_, ep, err):
+        """Hook method to execute on import failure."""
         LOG.error("Could not load %r: %s", ep.name, err)
         raise err
 

@@ -10,6 +10,8 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
+"""Qiskit Aer default backend plugin."""
+
 from qiskit.providers import aer
 from qiskit.test.mock import fake_provider
 
@@ -42,6 +44,7 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
             will be set. If this is not specified a
             :class:`~qiskit.providers.aer.AerSimulator` will be returned with
             the defailt settings.
+        :raises ValueError: If an invalid backend selection string is passed in
         """
         if backend_selection is None:
             return aer.AerSimulator()

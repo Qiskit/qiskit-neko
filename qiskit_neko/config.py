@@ -53,6 +53,7 @@ class NekoConfig:
             self.load_config()
 
     def load_config(self):
-        with open(self.filename, "r") as fd:
+        """Load the specified configuration file."""
+        with open(self.filename, "r", encoding="utf8") as fd:
             raw_config = yaml.safe_load(fd.read())
         self.config = schema(raw_config)
