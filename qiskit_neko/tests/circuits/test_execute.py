@@ -29,6 +29,8 @@ class TestExecute(base.BaseTestCase):
             raise self.skipException(
                 "Provided backend {self.backend} does not have a configurable shots option"
             )
+        if hasattr(self.backend.options, "seed_simulator"):
+            self.backend.set_options(seed_simulator=42)
 
     def test_bell_execute_fixed_shots(self):
         """Test the execution of a bell circuit with an explicit shot count."""
@@ -56,13 +58,13 @@ class TestExecute(base.BaseTestCase):
             counts, {"00": expected_count, "11": expected_count}, delta=delta
         )
 
-    def test_bell_execute_backend_shots_set_option(self):
+    def test_bell_execute_backend_shots_set_options(self):
         """Test the execution of a bell circuit with an explicit shot count set via options."""
         circuit = QuantumCircuit(2)
         circuit.h(0)
         circuit.cx(0, 1)
         circuit.measure_all()
-        self.backend.set_option("shots", 100)
+        self.backend.set_options(shots=100)
         job = execute(circuit, self.backend)
         result = job.result()
         counts = result.get_counts()
