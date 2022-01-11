@@ -33,7 +33,6 @@ class TestCircuitBasics(base.BaseTestCase):
         self.circ.cx(0, 1)
         self.circ.cx(0, 2)
 
-
     @ddt.data(0, 1, 2, 3)
     def test_ghz_circuit(self, opt_level):
         """Test execution of ghz circuit."""
@@ -41,24 +40,23 @@ class TestCircuitBasics(base.BaseTestCase):
         tqc = transpile(self.circ, self.backend, optimization_level=opt_level)
         run_kwargs = {}
         expected_value = None
-        if hasattr(self.backend.options, 'shots'):
-            run_kwargs['shots'] = 1000
+        if hasattr(self.backend.options, "shots"):
+            run_kwargs["shots"] = 1000
             expected_value = 500
-        if hasattr(self.backend.options, 'seed_simulator'):
-            run_kwargs['seed_simulator'] = 42
+        if hasattr(self.backend.options, "seed_simulator"):
+            run_kwargs["seed_simulator"] = 42
         job = self.backend.run(tqc, **run_kwargs)
         result = job.result()
         counts = result.get_counts()
         if expected_value is None:
             expected_value = sum(counts.values()) / 2
-        expected = {'000': expected_value, '111': expected_value}
-        delta = 10**math.floor(math.log10(expected_value))
+        expected = {"000": expected_value, "111": expected_value}
+        delta = 10 ** math.floor(math.log10(expected_value))
         self.assertDictAlmostEqual(counts, expected, delta=delta)
 
     def test_ghz_circuit_quantum_info(self):
         """Test statevector simulation with quantum info of ghz circuit."""
-        state = Statevector.from_int(0, 2**3)
+        state = Statevector.from_int(0, 2 ** 3)
         state = state.evolve(self.circ)
-        expected = np.array([1/math.sqrt(2), 0, 0, 0, 0, 0, 0, 1/math.sqrt(2)],
-                            dtype=complex)
+        expected = np.array([1 / math.sqrt(2), 0, 0, 0, 0, 0, 0, 1 / math.sqrt(2)], dtype=complex)
         np.testing.assert_array_almost_equal(state, expected)
