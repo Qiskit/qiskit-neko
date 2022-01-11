@@ -80,7 +80,51 @@ the tests you must push a pull request to qiskit-neko and qiskit-neko will only
 run CI from released version we validate the current functionality works. Then
 since all projects tested by qiskit-neko are required to run qiskit-neko on
 proposed changes we are checking that all the functionality we doesn't regress
-with the proposed change applied..
+with the proposed change applied.
+
+### Downstream usage in testing
+
+The expecation is for any qiskit project that includes tests in qiskit-neko that
+they run in CI agains their ``main`` branch with a pre-merge CI job, while all
+other qiskit components are using **released** versions published on pypi. This
+for two reasons primarily. First it is done to ensure we're actually testing
+what users actually run and that any potential compatibility issues between
+released versions and a potential change are caught prior to a release. The
+API stabililty guarantees provided by Qiskit projects only apply at release and
+for an integration test suite we only are concerned that we do not break
+compatibility with what users will be running and that there is an upgrade path
+for each project. Secondly, this is necessary because of limitations in the
+publically available CI systems on github. We do not have mechanisms in CI to
+enable co-gating or testing a PR with more than one proposed change applied (to
+1 or more repository) so if we were to enable bidirectional ci (where an
+upstream project is run from main at the same time as the project under test
+and vice versa) there is a high probability of having the job broken on both sides
+without a way to unblock it without merging a PR that does not have passing CI.
+
+### Intentional API changes
+
+As many qiskit projects don't strictly adhere to the use of public APIs exposed
+by the upstream qiskit projects there are situations that come up where an
+intentional api change to fix a bug or other scenario results in a break of
+a downstream project. In such situations a careful procedure needs to be
+followed to acknowledge the change and ensure it's clearly documented both
+in the upstream project's release documentation as well as for the downstream
+projects effected. The following procedure should be used to ensure this
+happens:
+
+1. Propose a PR to the upstream project that is failing qiskit-neko CI and
+   has the appropriate release note. This will need an acknowledgement by a
+   core team member that it is an acceptable change.
+2. Propose a PR to the downstream projects effected by the change proposed in
+   #1 that makes the necessary updates to account for #1. This PR will likely
+   also fail the qiskit-neko job which is expected until #1 is included in a
+   new release of the upstream project.
+3. Propose a PR and tracking issue to qiskit-neko that adds a skip on the test
+   with a skip message that refers to the tracking issue. This skip will remain
+   in place until #1 and #2 are included in a release.
+3a. If a test change is necessary propose that change along with the skip.
+4. When #1 and #2 are both released with the fix propose a PR removing the skip
+   from qiskit-neko that closes the tracking issue.
 
 
 ## License
