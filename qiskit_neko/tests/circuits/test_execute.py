@@ -17,6 +17,7 @@ import math
 from qiskit.circuit import QuantumCircuit
 from qiskit import execute
 
+from qiskit_neko import decorators
 from qiskit_neko.tests import base
 
 
@@ -32,6 +33,7 @@ class TestExecute(base.BaseTestCase):
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
+    @decorators.component_attr("terra", "backend")
     def test_bell_execute_fixed_shots(self):
         """Test the execution of a bell circuit with an explicit shot count."""
         circuit = QuantumCircuit(2)
@@ -43,6 +45,7 @@ class TestExecute(base.BaseTestCase):
         counts = result.get_counts()
         self.assertDictAlmostEqual(counts, {"00": 50, "11": 50}, delta=10)
 
+    @decorators.component_attr("terra", "backend")
     def test_bell_execute_default_shots(self):
         """Test the execution of a bell circuit with an explicit shot count."""
         circuit = QuantumCircuit(2)
@@ -58,6 +61,7 @@ class TestExecute(base.BaseTestCase):
             counts, {"00": expected_count, "11": expected_count}, delta=delta
         )
 
+    @decorators.component_attr("terra", "backend")
     def test_bell_execute_backend_shots_set_options(self):
         """Test the execution of a bell circuit with an explicit shot count set via options."""
         circuit = QuantumCircuit(2)

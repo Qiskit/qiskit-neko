@@ -19,6 +19,7 @@ import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit.quantum_info import Statevector
 
+from qiskit_neko import decorators
 from qiskit_neko.tests import base
 
 
@@ -33,6 +34,7 @@ class TestCircuitBasics(base.BaseTestCase):
         self.circ.cx(0, 1)
         self.circ.cx(0, 2)
 
+    @decorators.component_attr("terra", "backend")
     @ddt.data(0, 1, 2, 3)
     def test_ghz_circuit(self, opt_level):
         """Test execution of ghz circuit."""
@@ -54,6 +56,7 @@ class TestCircuitBasics(base.BaseTestCase):
         delta = 10 ** math.floor(math.log10(expected_value))
         self.assertDictAlmostEqual(counts, expected, delta=delta)
 
+    @decorators.component_attr("terra")
     def test_ghz_circuit_quantum_info(self):
         """Test statevector simulation with quantum info of ghz circuit."""
         state = Statevector.from_int(0, 2 ** 3)
