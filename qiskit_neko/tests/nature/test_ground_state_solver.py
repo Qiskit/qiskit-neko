@@ -12,10 +12,9 @@
 
 """Test ground state solvers."""
 
-import math
-
 from qiskit.algorithms import NumPyMinimumEigensolver
-from qiskit_nature.drivers import UnitsType, Molecule
+from qiskit.utils import QuantumInstance
+from qiskit_nature.drivers import Molecule
 from qiskit_nature.drivers.second_quantization import (
     ElectronicStructureDriverType,
     ElectronicStructureMoleculeDriver,
@@ -23,7 +22,6 @@ from qiskit_nature.drivers.second_quantization import (
 from qiskit_nature.problems.second_quantization import ElectronicStructureProblem
 from qiskit_nature.converters.second_quantization import QubitConverter
 from qiskit_nature.mappers.second_quantization import JordanWignerMapper
-from qiskit.utils import QuantumInstance
 from qiskit_nature.algorithms import VQEUCCFactory
 from qiskit_nature.algorithms import GroundStateEigensolver
 
