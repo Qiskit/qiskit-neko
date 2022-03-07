@@ -1,6 +1,6 @@
 # qiskit-neko
 
-[![License](https://img.shields.io/github/license/Qiskit/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/github/license/mtreinish/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
 
 This repository contains integration tests for Qiskit. These tests are used
 for primarily for two purposes as backwards compatibility testing for Qiskit
