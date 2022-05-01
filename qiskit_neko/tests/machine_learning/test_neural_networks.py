@@ -16,7 +16,7 @@ import numpy as np
 
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
-from qiskit.opflow import StateFn, PauliSumOp, ExpectationFactory, Gradient
+from qiskit.opflow import StateFn, PauliSumOp, PauliExpectation, Gradient
 from qiskit.utils import QuantumInstance
 
 from qiskit_machine_learning.neural_networks import OpflowQNN
@@ -35,9 +35,9 @@ class TestNeuralNetworks(base.BaseTestCase):
 
     @decorators.component_attr("terra", "backend", "machine_learning")
     def test_neural_networks(self):
-        """ Test the execution of quantum neural networks using OpflowQNN """
+        """Test the execution of quantum neural networks using OpflowQNN"""
 
-        expval = ExpectationFactory()
+        expval = PauliExpectation()
         gradient = Gradient()
         qi_sv = QuantumInstance(self.backend)
 
@@ -54,11 +54,11 @@ class TestNeuralNetworks(base.BaseTestCase):
         qnn1 = OpflowQNN(op1, [params1[0]], [params1[1]], expval, gradient, qi_sv)
 
         rng = np.random.default_rng(seed=42)
-        input1 = rng.random(size = qnn1.num_inputs)
-        weights1 = rng.random(size = qnn1.num_inputs)
+        input1 = rng.random(size=qnn1.num_inputs)
+        weights1 = rng.random(size=qnn1.num_weights)
 
         qnn1_forward = qnn1.forward(input1, weights1)
         qnn1_backward = qnn1.backward(input1, weights1)
 
-        self.assertAlmostEqual(qnn1_forward[0][0], 0.08242345, delta = 0.0001)
-        self.assertAlmostEqual(qnn1_backward[1][0][0], [0.2970094], delta = 0.0001)
+        self.assertAlmostEqual(qnn1_forward[0][0], 0.08242345, delta=0.0001)
+        self.assertAlmostEqual(qnn1_backward[1][0][0], [0.2970094], delta=0.0001)
