@@ -61,4 +61,4 @@ class TestNeuralNetworks(base.BaseTestCase):
         vqc.fit(x, y_one_hot)
         score = vqc.score(x, y_one_hot)
 
-        self.assertAlmostEqual(score, 0.6, delta=0.01)
+        self.assertAlmostEqual(score, 0.75, delta=0.1)
