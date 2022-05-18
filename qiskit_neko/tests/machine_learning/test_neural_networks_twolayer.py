@@ -65,4 +65,6 @@ class TestNeuralNetworks(base.BaseTestCase):
         ]
 
         self.assertAlmostEqual(qnn3_forward[0][0], -0.66604201, delta=0.1)
-        self.assertAlmostEqual(qnn3_backward[1][0][0].tolist(), qnn3_backward_ideal, delta=0.1)
+        qnn3_backward_result = qnn3_backward[1][0][0].tolist()
+        for i in range(len(qnn3_backward_ideal)):
+            self.assertAlmostEqual(qnn3_backward_result[i], qnn3_backward_ideal[i], delta=0.1)
