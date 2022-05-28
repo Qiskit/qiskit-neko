@@ -1,0 +1,38 @@
+name: 'Run Tests'
+description: 'Run Tests'
+inputs:
+  repo-name:
+    description: 'Repository to be tested'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Clone mtreinish/qiskit-neko PUBLIC repository
+      uses: mtreinish/clone-github-repo-action@v2
+      with:
+        owner: 'mtreinish'
+        repository: 'qiskit-neko'
+    - name: Access cloned repository content
+      run: |
+        cd qiskit-neko
+    - name: Download Released Dependencies
+      run: |
+        pip install .
+        cd ..
+    - name: Clone qiskit/"${{ inputs.repo-name }}" PUBLIC repository
+      uses: Qiskit/clone-github-repo-action@v2
+      with:
+        owner: 'Qiskit'
+        repository: "${{ inputs.repo-name }}"    
+    - name: Download from Source
+      run: |
+        cd "${{ inputs.repo-name }}"
+        pip install .
+        cd ..
+    - name: Run Unit Tests
+      env:
+        PYTHONWARNINGS: default
+      run: |
+        cd qiskit-neko
+        stestr run
+      shell: bash
