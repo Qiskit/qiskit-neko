@@ -1,0 +1,24 @@
+{
+  "name": "qiskit-neko",
+  "version": "1.0.0",
+  "description": "[![License](https://img.shields.io/github/license/mtreinish/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tgag17/qiskit-neko.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tgag17/qiskit-neko/issues"
+  },
+  "homepage": "https://github.com/tgag17/qiskit-neko#readme"
+}
