@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tgag17/qiskit-neko.git"
+    "url": "git+https://github.com/mtreinish/qiskit-neko.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "apache 2.0",
   "bugs": {
-    "url": "https://github.com/tgag17/qiskit-neko/issues"
+    "url": "https://github.com/mtreinish/qiskit-neko/issues"
   },
-  "homepage": "https://github.com/tgag17/qiskit-neko#readme"
+  "homepage": "https://github.com/mtreinish/qiskit-neko#readme"
 }
