@@ -1,9 +1,10 @@
 name: 'Run Tests'
 description: 'Run Tests'
 inputs:
-  repo-name:
-    description: 'Repository to be tested'
-    required: true
+  test_selection:
+    description: 'Positional Argument for stestr run'
+    default: ""
+    required: false
 runs:
   using: "composite"
   steps:
@@ -19,20 +20,12 @@ runs:
       run: |
         pip install .
         cd ..
-    - name: Clone qiskit/"${{ inputs.repo-name }}" PUBLIC repository
-      uses: Qiskit/clone-github-repo-action@v2
-      with:
-        owner: 'Qiskit'
-        repository: "${{ inputs.repo-name }}"    
-    - name: Download from Source
-      run: |
-        cd "${{ inputs.repo-name }}"
-        pip install .
-        cd ..
+    - name: Checkout base repository
+      uses: actions/checkout@v3   
     - name: Run Unit Tests
       env:
         PYTHONWARNINGS: default
       run: |
         cd qiskit-neko
-        stestr run
+        stestr run ${{ inputs.test_selection }}
       shell: bash
