@@ -17,14 +17,9 @@ runs:
       with:
         repository: Qiskit/qiskit-neko
         path: qiskit-neko
-    - name: Access cloned repository content
-      run: |
-        cd qiskit-neko
-      shell: bash
     - name: Download Released Dependencies
       run: |
-        pip install .
-        cd ..
+        pip install qiskit-neko
       shell: bash
     - name: Checkout base repository
       uses: actions/checkout@v3
