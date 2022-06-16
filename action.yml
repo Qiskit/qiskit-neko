@@ -19,7 +19,7 @@ runs:
         path: qiskit-neko
     - name: Download Released Dependencies
       run: |
-        pip install qiskit-neko
+        pip install ./qiskit-neko
       shell: bash
     - name: Checkout base repository
       uses: actions/checkout@v3
