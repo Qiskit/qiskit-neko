@@ -1,4 +1,5 @@
-qiskit
+qiskit-terra
+qiskit-aer
 qiskit-nature[pyscf]
 qiskit-experiments
 qiskit-machine-learning
