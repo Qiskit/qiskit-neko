@@ -23,9 +23,13 @@ runs:
       shell: bash
     - name: Checkout base repository
       uses: actions/checkout@v3
+      with:
+        path: repo_under_test
     - name: Install repo under test
       run: |
+        pushd repo_under_test
         ${{ inputs.repo_install_command }}
+        popd
       shell: bash
     - name: Run Unit Tests
       env:
