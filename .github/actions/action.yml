@@ -1,0 +1,38 @@
+name: 'Run Tests'
+description: 'Run Tests'
+inputs:
+  test_selection:
+    description: 'Positional Argument for stestr run'
+    default: ""
+    required: false
+  repo_install_command:
+    description: 'Optional command to run for installing repository under test'
+    default: "pip install ."
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Clone mtreinish/qiskit-neko PUBLIC repository
+      uses: actions/checkout@v3
+      with:
+        repository: mtreinish/qiskit-neko
+        path: qiskit-neko
+    - name: Access cloned repository content
+      run: |
+        cd qiskit-neko
+    - name: Download Released Dependencies
+      run: |
+        pip install .
+        cd ..
+    - name: Checkout base repository
+      uses: actions/checkout@v3   
+    - name: Install repo under test
+      run: |
+        ${{ inputs.repo_install_command }}
+    - name: Run Unit Tests
+      env:
+        PYTHONWARNINGS: default
+      run: |
+        cd qiskit-neko
+        stestr run ${{ inputs.test_selection }}
+      shell: bash
