@@ -37,7 +37,7 @@ setup(
     description="Integration testing for Qiskit",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/mtreinish/qiskit-neko",
+    url="https://github.com/Qiskit/qiskit-neko",
     author="Matthew Treinish",
     author_email="mtreinish@kortar.org",
     license="Apache 2.0",
@@ -61,9 +61,9 @@ setup(
     include_package_data=True,
     python_requires=">=3.7",
     project_urls={
-        "Bug Tracker": "https://github.com/mtreinish/qiskit-neko/issues",
+        "Bug Tracker": "https://github.com/Qiskit/qiskit-neko/issues",
         "Documentation": "https://qiskit.org/documentation/",
-        "Source Code": "https://github.com/mtreinish/qiskit-neko",
+        "Source Code": "https://github.com/Qiskit/qiskit-neko",
     },
     zip_safe=False,
     entry_points={

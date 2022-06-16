@@ -1,7 +1,7 @@
 {
   "name": "qiskit-neko",
   "version": "1.0.0",
-  "description": "[![License](https://img.shields.io/github/license/mtreinish/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)",
+  "description": "[![License](https://img.shields.io/github/license/Qiskit/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)",
   "main": "index.js",
   "directories": {
     "doc": "docs",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mtreinish/qiskit-neko.git"
+    "url": "git+https://github.com/Qiskit/qiskit-neko.git"
   },
   "keywords": [],
   "author": "",
   "license": "apache 2.0",
   "bugs": {
-    "url": "https://github.com/mtreinish/qiskit-neko/issues"
+    "url": "https://github.com/Qiskit/qiskit-neko/issues"
   },
-  "homepage": "https://github.com/mtreinish/qiskit-neko#readme"
+  "homepage": "https://github.com/Qiskit/qiskit-neko#readme"
 }

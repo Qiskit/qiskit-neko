@@ -1,6 +1,6 @@
 # qiskit-neko
 
-[![License](https://img.shields.io/github/license/mtreinish/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/github/license/Qiskit/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
 
 This repository contains integration tests for Qiskit. These tests are used
 for primarily for two purposes as backwards compatibility testing for Qiskit
@@ -15,12 +15,12 @@ objects that provide an interface to Quantum hardware or a simulator.
 Currently qiskit-neko is not designed to run as a standalone package and you
 need to checkout the git source repository to run it. This is done to simplify
 the execution of the tests as qiskit-neko leverages the
-[``stestr``](https://github.com/mtreinish/stestr) for the execution of its
+[``stestr``](https://github.com/Qiskit/stestr) for the execution of its
 tests. To install qiskit-neko you need to first clone it with
 [git](https://git-scm.com/):
 
 ```
-git clone https://github.com/mtreinish/qiskit-neko.git
+git clone https://github.com/Qiskit/qiskit-neko.git
 ```
 
 then you can install it using pip into your python environment

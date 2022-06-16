@@ -62,7 +62,7 @@ When writing tests for Qiskit Neko there are some guidelines to keep in mind.
 
 All test classes in qiskit-neko should be inherited from the base test class:
 `BaseTestCase` (defined in:
-https://github.com/mtreinish/qiskit-neko/blob/main/qiskit_neko/tests/base.py).
+https://github.com/Qiskit/qiskit-neko/blob/main/qiskit_neko/tests/base.py).
 This base test class provides common setup functionality that automate most
 of the necessary fixtures like setting per test timeouts and capturing stdout,
 stderr, logging, etc.  But, for the purposes of using backends the base test
