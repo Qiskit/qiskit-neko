@@ -12,7 +12,8 @@
 
 """Qiskit Aer default backend plugin."""
 
-from qiskit.providers import aer, fake_provider
+import qiskit_aer as aer
+from qiskit.providers import fake_provider
 
 from qiskit_neko import backend_plugin
 
