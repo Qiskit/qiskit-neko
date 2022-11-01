@@ -34,7 +34,7 @@ class TestVQEPrimitives(base.BaseTestCase):
 
     @decorators.component_attr("terra", "backend")
     def test_sampling_vqe(self):
-        """Test the execution of SamplingVQE with BackendEstimator."""
+        """Test the execution of SamplingVQE with BackendSampler."""
         sampler = BackendSampler(self.backend)
         operator = PauliSumOp(SparsePauliOp(["ZZ", "IZ", "II"], coeffs=[1, -0.5, 0.12]))
         ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
