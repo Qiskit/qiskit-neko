@@ -53,6 +53,5 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
 
         vqc.fit(x, y01)
         score = vqc.score(x, y01)
-        print(score, file=sys.stderr)
 
         self.assertGreaterEqual(score, 0.5)
