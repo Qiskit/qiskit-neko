@@ -11,8 +11,6 @@
 # that they have been altered from the originals.
 
 """Tests for quantum neural networks classifier."""
-import sys
-
 import numpy as np
 from ddt import ddt, data
 from qiskit.algorithms.optimizers import COBYLA
