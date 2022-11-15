@@ -13,18 +13,19 @@
 """Tests for quantum neural networks."""
 
 import numpy as np
-
+from ddt import ddt, data, unpack
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
-from qiskit.opflow import StateFn, PauliSumOp, PauliExpectation, Gradient
-from qiskit.utils import QuantumInstance
+from qiskit.primitives import Sampler as ReferenceSampler, Estimator as ReferenceEstimator
+from qiskit.quantum_info import SparsePauliOp
+from qiskit_aer.primitives import Sampler as AerSampler, Estimator as AerEstimator
+from qiskit_machine_learning.neural_networks import SamplerQNN, EstimatorQNN
 
-from qiskit_machine_learning.neural_networks import OpflowQNN
-
-from qiskit_neko.tests import base
 from qiskit_neko import decorators
+from qiskit_neko.tests import base
 
 
+@ddt
 class TestNeuralNetworks(base.BaseTestCase):
     """Test adapted from the qiskit_machine_learning tutorials."""
 
@@ -33,32 +34,55 @@ class TestNeuralNetworks(base.BaseTestCase):
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
+        self.input_params = [Parameter("x")]
+        self.weight_params = [Parameter("w")]
+        self.circuit = QuantumCircuit(1)
+        self.circuit.ry(self.input_params[0], 0)
+        self.circuit.rx(self.weight_params[0], 0)
+        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
+        self.estimators = dict(reference=ReferenceEstimator(), aer=AerEstimator())
+
     @decorators.component_attr("terra", "backend", "machine_learning")
-    def test_neural_networks(self):
-        """Test the execution of quantum neural networks using OpflowQNN"""
+    @data(["reference", 4], ["aer", 2])
+    @unpack
+    def test_sampler_qnn(self, implementation, decimal):
+        """Test the execution of quantum neural networks using SamplerQNN."""
+        sampler = self.samplers[implementation]
 
-        expval = PauliExpectation()
-        gradient = Gradient()
-        qi_sv = QuantumInstance(self.backend)
+        qnn = SamplerQNN(
+            circuit=self.circuit,
+            input_params=self.input_params,
+            weight_params=self.weight_params,
+            input_gradients=True,
+            sampler=sampler,
+        )
+        input_data = np.ones(len(self.input_params))
+        weights = np.ones(len(self.weight_params))
+        probabilities = qnn.forward(input_data, weights)
+        np.testing.assert_array_almost_equal(probabilities, [[0.6460, 0.3540]], decimal)
+        input_grad, weight_grad = qnn.backward(input_data, weights)
+        np.testing.assert_array_almost_equal(input_grad, [[[-0.2273], [0.2273]]], decimal)
+        np.testing.assert_array_almost_equal(weight_grad, [[[-0.2273], [0.2273]]], decimal)
 
-        params1 = [Parameter("input1"), Parameter("weight1")]
-        qc1 = QuantumCircuit(1)
-        qc1.h(0)
-        qc1.ry(params1[0], 0)
-        qc1.rx(params1[1], 0)
-        qc_sfn1 = StateFn(qc1)
+    @decorators.component_attr("terra", "backend", "machine_learning")
+    @data(["reference", 4], ["aer", 1])
+    @unpack
+    def test_estimator_qnn(self, implementation, decimal):
+        """Test the execution of quantum neural networks using EstimatorQNN."""
+        estimator = self.estimators[implementation]
 
-        h1 = StateFn(PauliSumOp.from_list([("Z", 1.0), ("X", 1.0)]))
-        op1 = ~h1 @ qc_sfn1
-
-        qnn1 = OpflowQNN(op1, [params1[0]], [params1[1]], expval, gradient, qi_sv)
-
-        rng = np.random.default_rng(seed=42)
-        input1 = rng.random(size=qnn1.num_inputs)
-        weights1 = rng.random(size=qnn1.num_weights)
-
-        qnn1_forward = qnn1.forward(input1, weights1)
-        qnn1_backward = qnn1.backward(input1, weights1)
-
-        self.assertAlmostEqual(qnn1_forward[0][0], 0.08242345, delta=0.1)
-        self.assertAlmostEqual(qnn1_backward[1][0][0], [0.2970094], delta=0.1)
+        qnn = EstimatorQNN(
+            circuit=self.circuit,
+            observables=SparsePauliOp.from_list([("Z", 1)]),
+            input_params=self.input_params,
+            weight_params=self.weight_params,
+            input_gradients=True,
+            estimator=estimator,
+        )
+        input_data = np.ones(len(self.input_params))
+        weights = np.ones(len(self.weight_params))
+        expectations = qnn.forward(input_data, weights)
+        np.testing.assert_array_almost_equal(expectations, [[0.2919]], decimal)
+        input_grad, weight_grad = qnn.backward(input_data, weights)
+        np.testing.assert_array_almost_equal(input_grad, [[[-0.4546]]], decimal)
+        np.testing.assert_array_almost_equal(weight_grad, [[[-0.4546]]], decimal)

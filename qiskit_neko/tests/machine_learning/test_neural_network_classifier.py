@@ -13,18 +13,18 @@
 """Tests for quantum neural networks classifier."""
 
 import numpy as np
-
-from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap
-from qiskit.utils import QuantumInstance
-
+from ddt import ddt, data
 from qiskit.algorithms.optimizers import COBYLA
+from qiskit.primitives import Sampler as ReferenceSampler
+from qiskit_aer.primitives import Sampler as AerSampler
 from qiskit_machine_learning.algorithms.classifiers import VQC
 
-from qiskit_neko.tests import base
 from qiskit_neko import decorators
+from qiskit_neko.tests import base
 
 
-class TestNeuralNetworks(base.BaseTestCase):
+@ddt
+class TestNetworkClassifier(base.BaseTestCase):
     """Test adapted from the qiskit_machine_learning tutorials."""
 
     def setUp(self):
@@ -32,33 +32,26 @@ class TestNeuralNetworks(base.BaseTestCase):
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
-    @decorators.component_attr("terra", "backend", "machine_learning")
-    def test_neural_networks(self):
-        """Test the execution of quantum neural networks using OpflowQNN"""
+        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
 
+    @decorators.component_attr("terra", "backend", "machine_learning")
+    @data("reference", "aer")
+    def test_neural_network_classifier(self, implementation):
+        """Test the execution of quantum neural networks using OpflowQNN"""
         rng = np.random.default_rng(seed=42)
 
         num_inputs = 2
         num_samples = 20
         x = 2 * rng.random(size=(num_samples, num_inputs)) - 1
         y01 = 1 * (np.sum(x, axis=1) >= 0)
-        y_one_hot = np.zeros((num_samples, 2))
-        for i in range(num_samples):
-            y_one_hot[i, y01[i]] = 1
+        # y_one_hot = np.zeros((num_samples, 2))
+        # for i in range(num_samples):
+        #     y_one_hot[i, y01[i]] = 1
 
-        quantum_instance = QuantumInstance(self.backend)
-        feature_map = ZZFeatureMap(num_inputs)
-        ansatz = RealAmplitudes(num_inputs, reps=1)
+        sampler = self.samplers[implementation]
+        vqc = VQC(num_qubits=2, optimizer=COBYLA(maxiter=100), sampler=sampler)
 
-        vqc = VQC(
-            feature_map=feature_map,
-            ansatz=ansatz,
-            loss="cross_entropy",
-            optimizer=COBYLA(),
-            quantum_instance=quantum_instance,
-        )
+        vqc.fit(x, y01)
+        score = vqc.score(x, y01)
 
-        vqc.fit(x, y_one_hot)
-        score = vqc.score(x, y_one_hot)
-
-        self.assertAlmostEqual(score, 0.7, delta=0.15)
+        self.assertGreaterEqual(score, 0.5)
