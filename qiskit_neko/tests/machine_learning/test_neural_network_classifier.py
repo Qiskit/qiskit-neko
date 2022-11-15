@@ -44,9 +44,6 @@ class TestNetworkClassifier(base.BaseTestCase):
         num_samples = 20
         x = 2 * rng.random(size=(num_samples, num_inputs)) - 1
         y01 = 1 * (np.sum(x, axis=1) >= 0)
-        # y_one_hot = np.zeros((num_samples, 2))
-        # for i in range(num_samples):
-        #     y_one_hot[i, y01[i]] = 1
 
         sampler = self.samplers[implementation]
         vqc = VQC(num_qubits=2, optimizer=COBYLA(maxiter=100), sampler=sampler)
