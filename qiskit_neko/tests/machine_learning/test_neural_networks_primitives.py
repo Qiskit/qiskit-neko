@@ -40,7 +40,7 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
         self.estimators = dict(reference=ReferenceEstimator(), aer=AerEstimator())
 
-    @decorators.component_attr("terra", "backend", "machine_learning")
+    @decorators.component_attr("terra", "aer", "machine_learning")
     @data(["reference", 4], ["aer", 1])
     @unpack
     def test_sampler_qnn(self, implementation, decimal):
