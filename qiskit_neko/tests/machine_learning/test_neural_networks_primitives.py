@@ -31,8 +31,6 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        if hasattr(self.backend.options, "seed_simulator"):
-            self.backend.set_options(seed_simulator=42)
 
         self.input_params = [Parameter("x")]
         self.weight_params = [Parameter("w")]
