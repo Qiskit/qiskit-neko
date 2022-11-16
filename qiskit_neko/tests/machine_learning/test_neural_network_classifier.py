@@ -24,7 +24,7 @@ from qiskit_neko.tests import base
 from qiskit_neko import decorators
 
 
-class TestNeuralNetworks(base.BaseTestCase):
+class TestNeuralNetworkClassifier(base.BaseTestCase):
     """Test adapted from the qiskit_machine_learning tutorials."""
 
     def setUp(self):
@@ -33,7 +33,7 @@ class TestNeuralNetworks(base.BaseTestCase):
             self.backend.set_options(seed_simulator=42)
 
     @decorators.component_attr("terra", "backend", "machine_learning")
-    def test_neural_networks(self):
+    def test_neural_network_classifier(self):
         """Test the execution of quantum neural networks using OpflowQNN"""
 
         rng = np.random.default_rng(seed=42)
