@@ -62,7 +62,7 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         np.testing.assert_array_almost_equal(input_grad, [[[-0.2273], [0.2273]]], decimal)
         np.testing.assert_array_almost_equal(weight_grad, [[[-0.2273], [0.2273]]], decimal)
 
-    @decorators.component_attr("terra", "backend", "machine_learning")
+    @decorators.component_attr("terra", "aer", "machine_learning")
     @data(["reference", 4], ["aer", 1])
     @unpack
     def test_estimator_qnn(self, implementation, decimal):
