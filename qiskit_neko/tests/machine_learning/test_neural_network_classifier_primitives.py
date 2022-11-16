@@ -35,7 +35,7 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
     @decorators.component_attr("terra", "aer", "machine_learning")
     @data("reference", "aer")
     def test_neural_network_classifier(self, implementation):
-        """Test the execution of quantum neural networks using OpflowQNN"""
+        """Test the execution of quantum neural networks using VQC."""
         rng = np.random.default_rng(seed=42)
         algorithm_globals.random_seed = 42
 
