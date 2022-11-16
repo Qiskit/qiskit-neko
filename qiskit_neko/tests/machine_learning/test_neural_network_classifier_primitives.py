@@ -34,7 +34,7 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
 
         self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
 
-    @decorators.component_attr("terra", "backend", "machine_learning")
+    @decorators.component_attr("terra", "aer", "machine_learning")
     @data("reference", "aer")
     def test_neural_network_classifier(self, implementation):
         """Test the execution of quantum neural networks using OpflowQNN"""
