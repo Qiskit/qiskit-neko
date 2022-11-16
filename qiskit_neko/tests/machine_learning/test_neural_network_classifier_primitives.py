@@ -29,8 +29,6 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        if hasattr(self.backend.options, "seed_simulator"):
-            self.backend.set_options(seed_simulator=42)
 
         self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
 
