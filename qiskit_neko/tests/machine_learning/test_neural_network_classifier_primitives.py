@@ -30,7 +30,7 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
     def setUp(self):
         super().setUp()
 
-        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
+        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler(run_options={"seed": 42}))
 
     @decorators.component_attr("terra", "aer", "machine_learning")
     @data("reference", "aer")
