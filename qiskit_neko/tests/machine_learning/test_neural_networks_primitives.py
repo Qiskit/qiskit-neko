@@ -37,8 +37,10 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         self.circuit = QuantumCircuit(1)
         self.circuit.ry(self.input_params[0], 0)
         self.circuit.rx(self.weight_params[0], 0)
-        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler())
-        self.estimators = dict(reference=ReferenceEstimator(), aer=AerEstimator())
+        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler(run_options={"seed": 42}))
+        self.estimators = dict(
+            reference=ReferenceEstimator(), aer=AerEstimator(run_options={"seed": 42})
+        )
 
     @decorators.component_attr("terra", "aer", "machine_learning")
     @data(["reference", 4], ["aer", 1])
