@@ -17,7 +17,11 @@ runs:
       with:
         repository: Qiskit/qiskit-neko
         path: qiskit-neko
-    - name: Download Released Dependencies
+    - name: Update setuptools and pip
+      run: |
+        pip install -U setuptools pip
+      shell: bash
+    - name: Install neko and its dependencies
       run: |
         pip install ./qiskit-neko
       shell: bash
