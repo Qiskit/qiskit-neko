@@ -12,13 +12,14 @@
 
 """Test primitives with vqe."""
 
-from qiskit_aer.primitives import Sampler, Estimator
-from qiskit.algorithms.minimum_eigensolvers import SamplingVQE, VQE
-from qiskit.primitives import BackendSampler, BackendEstimator
+from qiskit.algorithms.minimum_eigensolvers import VQE, SamplingVQE
 from qiskit.algorithms.optimizers import SPSA
 from qiskit.circuit.library import TwoLocal
 from qiskit.opflow import PauliSumOp
+from qiskit.primitives import BackendEstimator, BackendSampler
 from qiskit.quantum_info import SparsePauliOp
+from qiskit.utils import algorithm_globals
+from qiskit_aer.primitives import Estimator, Sampler
 
 from qiskit_neko import decorators
 from qiskit_neko.tests import base
@@ -29,6 +30,7 @@ class TestVQEPrimitives(base.BaseTestCase):
 
     def setUp(self):
         super().setUp()
+        algorithm_globals.random_seed = 42
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
@@ -48,7 +50,7 @@ class TestVQEPrimitives(base.BaseTestCase):
     @decorators.component_attr("terra", "aer")
     def test_aer_sampling_vqe(self):
         """Test the aer sampler with SamplingVQE."""
-        sampler = Sampler()
+        sampler = Sampler(backend_options={"seed_simulator": 42})
         operator = PauliSumOp(SparsePauliOp(["ZZ", "IZ", "II"], coeffs=[1, -0.5, 0.12]))
         ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
         optimizer = SPSA()
@@ -74,7 +76,7 @@ class TestVQEPrimitives(base.BaseTestCase):
     @decorators.component_attr("terra", "aer")
     def test_aer_vqe(self):
         """Test the execution of VQE with Aer Estimator."""
-        estimator = Estimator()
+        estimator = Estimator(backend_options={"seed_simulator": 42})
         operator = PauliSumOp(SparsePauliOp(["ZZ", "IZ", "II"], coeffs=[1, -0.5, 0.12]))
         ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
         optimizer = SPSA()
