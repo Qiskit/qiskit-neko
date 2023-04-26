@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -12,18 +12,13 @@
 
 """Test ground state solvers."""
 
-from qiskit.algorithms import NumPyMinimumEigensolver
-from qiskit.utils import QuantumInstance
-from qiskit_nature.drivers import Molecule
-from qiskit_nature.drivers.second_quantization import (
-    ElectronicStructureDriverType,
-    ElectronicStructureMoleculeDriver,
-)
-from qiskit_nature.problems.second_quantization import ElectronicStructureProblem
-from qiskit_nature.converters.second_quantization import QubitConverter
-from qiskit_nature.mappers.second_quantization import JordanWignerMapper
-from qiskit_nature.algorithms import VQEUCCFactory
-from qiskit_nature.algorithms import GroundStateEigensolver
+from qiskit.algorithms.minimum_eigensolvers import NumPyMinimumEigensolver, VQE
+from qiskit.algorithms.optimizers import SLSQP
+from qiskit.primitives import Estimator
+from qiskit_nature.second_q.algorithms import GroundStateEigensolver
+from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
+from qiskit_nature.second_q.drivers import PySCFDriver
+from qiskit_nature.second_q.mappers import JordanWignerMapper
 
 from qiskit_neko.tests import base
 from qiskit_neko import decorators
@@ -32,29 +27,31 @@ from qiskit_neko import decorators
 class TestGroundStateSolvers(base.BaseTestCase):
     """Test the use of the execute() method in qiskit-terra."""
 
-    def setUp(self):
-        super().setUp()
-        if hasattr(self.backend.options, "seed_simulator"):
-            self.backend.set_options(seed_simulator=42)
-
     @decorators.component_attr("terra", "backend", "nature")
     def test_ground_state_solver(self):
         """Test the execution of a bell circuit with an explicit shot count."""
-        molecule = Molecule(
-            geometry=[["H", [0.0, 0.0, 0.0]], ["H", [0.0, 0.0, 0.735]]], charge=0, multiplicity=1
+        driver = PySCFDriver(atom="H 0.0 0.0 0.0; H 0.0 0.0 0.735", basis="sto3g")
+        es_problem = driver.run()
+        qubit_mapper = JordanWignerMapper()
+        estimator = Estimator()
+        optimizer = SLSQP()
+        ansatz = UCCSD(
+            es_problem.num_spatial_orbitals,
+            es_problem.num_particles,
+            qubit_mapper,
+            initial_state=HartreeFock(
+                es_problem.num_spatial_orbitals,
+                es_problem.num_particles,
+                qubit_mapper,
+            ),
         )
-        driver = ElectronicStructureMoleculeDriver(
-            molecule, basis="sto3g", driver_type=ElectronicStructureDriverType.PYSCF
-        )
-        es_problem = ElectronicStructureProblem(driver)
-        qubit_converter = QubitConverter(JordanWignerMapper())
-        quantum_instance = QuantumInstance(self.backend)
-        vqe_solver = VQEUCCFactory(quantum_instance)
-        calc = GroundStateEigensolver(qubit_converter, vqe_solver)
+        vqe_solver = VQE(estimator, ansatz, optimizer)
+        vqe_solver.initial_point = [0.0] * ansatz.num_parameters
+        calc = GroundStateEigensolver(qubit_mapper, vqe_solver)
         result = calc.solve(es_problem)
         # Calculate expected result from numpy solver
         numpy_solver = NumPyMinimumEigensolver()
-        np_calc = GroundStateEigensolver(qubit_converter, numpy_solver)
+        np_calc = GroundStateEigensolver(qubit_mapper, numpy_solver)
         expected = np_calc.solve(es_problem)
         self.assertAlmostEqual(result.hartree_fock_energy, expected.hartree_fock_energy)
         self.assertEqual(len(result.total_energies), 1)
