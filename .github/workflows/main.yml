@@ -9,6 +9,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   tests:
+    if: github.repository_owner == 'Qiskit'
     name: tests-python${{ matrix.python-version }}-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -42,6 +43,7 @@ jobs:
       - name: Install and Run Tests
         run: tox -e py
   neko:
+    if: github.repository_owner == 'Qiskit'
     name: neko
     runs-on: ubuntu-latest
     steps:
@@ -67,6 +69,7 @@ jobs:
           NEKO_TEST_TIMEOUT: 120
 
   lint:
+    if: github.repository_owner == 'Qiskit'
     name: lint
     runs-on: ubuntu-latest
     steps:
@@ -89,6 +92,7 @@ jobs:
       - name: Run lint
         run: tox -elint
   docs:
+    if: github.repository_owner == 'Qiskit'
     name: docs
     runs-on: ubuntu-latest
     steps:
