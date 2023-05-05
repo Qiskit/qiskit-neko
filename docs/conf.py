@@ -23,8 +23,8 @@ import subprocess
 
 # General configuration:
 
-project = u'qiskit-neko'
-copyright = u'2022, Matthew Treinish'
+project = 'qiskit-neko'
+copyright = '2022, Matthew Treinish'
 
 
 # The short X.Y version.
@@ -41,6 +41,7 @@ extensions = ['sphinx.ext.autodoc',
               'jupyter_sphinx',
               'reno.sphinxext',
               'sphinx.ext.intersphinx',
+              "sphinxcontrib.jquery",  # Remove when changing html_theme to qiskit_ecosystem.
              ]
 html_static_path = ['_static']
 templates_path = ['_templates']
