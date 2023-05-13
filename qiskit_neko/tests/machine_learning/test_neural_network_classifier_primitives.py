@@ -45,7 +45,12 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
         y01 = 1 * (np.sum(x, axis=1) >= 0)
 
         sampler = self.samplers[implementation]
-        vqc = VQC(num_qubits=2, optimizer=COBYLA(maxiter=100), sampler=sampler)
+        vqc = VQC(
+            num_qubits=2,
+            optimizer=COBYLA(maxiter=100),
+            sampler=sampler,
+            initial_point=np.zeros((2, 4)),
+        )
 
         vqc.fit(x, y01)
         score = vqc.score(x, y01)
