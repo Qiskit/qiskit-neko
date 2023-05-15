@@ -56,6 +56,7 @@ class TestNeuralNetworkClassifier(base.BaseTestCase):
             loss="cross_entropy",
             optimizer=COBYLA(),
             quantum_instance=quantum_instance,
+            initial_point=np.zeros((2, 2)),
         )
 
         vqc.fit(x, y_one_hot)
