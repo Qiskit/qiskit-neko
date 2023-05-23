@@ -18,11 +18,6 @@
 # qiskit-neko documentation build configuration file
 #
 
-import sys, os
-import subprocess
-
-# General configuration:
-
 project = 'qiskit-neko'
 copyright = '2022, Matthew Treinish'
 
