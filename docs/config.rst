@@ -4,7 +4,7 @@ Qiskit-Neko Configuration Files
 To support running against different backends and also tune the execute of
 tests qiskit-neko supports configuration files to tweak the configuration
 and make reproducible testing simpler. The format for qiskit-neko's
-configuration is a [yaml](https://yaml.org/) file, a fully populated example
+configuration is a `yaml <https://yaml.org/>`_ file, a fully populated example
 is below:
 
 .. code-block:: yaml
@@ -72,8 +72,8 @@ none of the subsequent locations will be checked:
 #. ``/etc/neko_config.yml``
 
 Since the actual execution of tests is handled by the external Python standard
-library [unittest](https://docs.python.org/3/library/unittest.html) framework
-the only mechanism to excplictly specify a configuration file path is with an
+library `unittest <https://docs.python.org/3/library/unittest.html>`_ framework
+the only mechanism to explicitly specify a configuration file path is with an
 environment variable. You can set the environment variable ``NekoConfigPath`` to
 the absolute path to the configuration file. If this is specified it will be
 used regardless of a file being present in any of the default file locations.
