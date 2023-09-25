@@ -42,6 +42,7 @@ extensions = ['sphinx.ext.autodoc',
               'reno.sphinxext',
               'sphinx.ext.intersphinx',
               "sphinxcontrib.jquery",  # Remove when changing html_theme to qiskit_ecosystem.
+              'qiskit_sphinx_theme'
              ]
 html_static_path = ['_static']
 templates_path = ['_templates']
@@ -66,14 +67,8 @@ autoclass_content = 'both'
 
 # HTML Output Options
 
-html_theme = 'qiskit_sphinx_theme'
-
-html_theme_options = {
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': True,
-}
+html_theme = "qiskit-ecosystem"
+html_title = f"{project} {release}"
 
 htmlhelp_basename = 'qiskit-neko'
 
