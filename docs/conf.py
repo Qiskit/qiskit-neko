@@ -41,8 +41,7 @@ extensions = ['sphinx.ext.autodoc',
               'jupyter_sphinx',
               'reno.sphinxext',
               'sphinx.ext.intersphinx',
-              "sphinxcontrib.jquery",  # Remove when changing html_theme to qiskit_ecosystem.
-              'qiskit_sphinx_theme'
+              'qiskit_sphinx_theme',
              ]
 html_static_path = ['_static']
 templates_path = ['_templates']
