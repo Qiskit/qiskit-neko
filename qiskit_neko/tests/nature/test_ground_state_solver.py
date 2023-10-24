@@ -12,8 +12,8 @@
 
 """Test ground state solvers."""
 
-from qiskit.algorithms.minimum_eigensolvers import NumPyMinimumEigensolver, VQE
-from qiskit.algorithms.optimizers import SLSQP
+from qiskit_algorithms import NumPyMinimumEigensolver, VQE
+from qiskit_algorithms.optimizers import SLSQP
 from qiskit.primitives import Estimator
 from qiskit_nature.second_q.algorithms import GroundStateEigensolver
 from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
@@ -49,6 +49,7 @@ class TestGroundStateSolvers(base.BaseTestCase):
         vqe_solver.initial_point = [0.0] * ansatz.num_parameters
         calc = GroundStateEigensolver(qubit_mapper, vqe_solver)
         result = calc.solve(es_problem)
+
         # Calculate expected result from numpy solver
         numpy_solver = NumPyMinimumEigensolver()
         np_calc = GroundStateEigensolver(qubit_mapper, numpy_solver)

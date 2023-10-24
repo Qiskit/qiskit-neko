@@ -13,9 +13,9 @@
 """Tests for quantum neural networks classifier."""
 import numpy as np
 from ddt import ddt, data
-from qiskit.algorithms.optimizers import COBYLA
+from qiskit_algorithms.optimizers import COBYLA
+from qiskit_algorithms.utils import algorithm_globals
 from qiskit.primitives import Sampler as ReferenceSampler
-from qiskit.utils import algorithm_globals
 from qiskit_aer.primitives import Sampler as AerSampler
 from qiskit_machine_learning.algorithms.classifiers import VQC
 
@@ -49,7 +49,7 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
             num_qubits=2,
             optimizer=COBYLA(maxiter=100),
             sampler=sampler,
-            initial_point=np.zeros((2, 4)),
+            initial_point=None,
         )
 
         vqc.fit(x, y01)
