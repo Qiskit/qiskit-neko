@@ -11,10 +11,13 @@
 # that they have been altered from the originals.
 
 """Test ground state solvers."""
+import unittest
 
 from qiskit_algorithms import NumPyMinimumEigensolver, VQE
 from qiskit_algorithms.optimizers import SLSQP
 from qiskit.primitives import Estimator
+
+import qiskit_nature
 from qiskit_nature.second_q.algorithms import GroundStateEigensolver
 from qiskit_nature.second_q.circuit.library import HartreeFock, UCCSD
 from qiskit_nature.second_q.drivers import PySCFDriver
@@ -27,6 +30,10 @@ from qiskit_neko import decorators
 class TestGroundStateSolvers(base.BaseTestCase):
     """Test the use of the execute() method in qiskit-terra."""
 
+    @unittest.skipIf(
+        tuple(map(int, qiskit_nature.__version__.split("."))) < (0, 7, 0),
+        "This test is incompatible with qiskit_nature versions below 0.7.0",
+    )
     @decorators.component_attr("terra", "backend", "nature")
     def test_ground_state_solver(self):
         """Test the execution of a bell circuit with an explicit shot count."""
