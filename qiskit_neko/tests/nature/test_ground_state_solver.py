@@ -31,7 +31,7 @@ class TestGroundStateSolvers(base.BaseTestCase):
     """Test the use of the execute() method in qiskit-terra."""
 
     @unittest.skipIf(
-        tuple(map(int, qiskit_nature.__version__.split("."))) < (0, 7, 0),
+        tuple(map(int, qiskit_nature.__version__.split(".")[:2])) < (0, 7),
         "This test is incompatible with qiskit_nature versions below 0.7.0",
     )
     @decorators.component_attr("terra", "backend", "nature")
