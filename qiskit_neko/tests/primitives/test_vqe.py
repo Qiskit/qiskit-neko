@@ -12,8 +12,8 @@
 
 """Test primitives with vqe."""
 
-from qiskit.algorithms.minimum_eigensolvers import VQE, SamplingVQE
-from qiskit.algorithms.optimizers import SPSA
+from qiskit_algorithms import VQE, SamplingVQE
+from qiskit_algorithms.optimizers import SPSA
 from qiskit.circuit.library import TwoLocal
 from qiskit.opflow import PauliSumOp
 from qiskit.primitives import BackendEstimator, BackendSampler
