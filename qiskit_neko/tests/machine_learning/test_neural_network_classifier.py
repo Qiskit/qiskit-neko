@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -13,10 +13,13 @@
 """Tests for quantum neural networks classifier."""
 import numpy as np
 from ddt import ddt, data
-from qiskit_algorithms.optimizers import COBYLA
-from qiskit_algorithms.utils import algorithm_globals
+
 from qiskit.primitives import Sampler as ReferenceSampler
 from qiskit_aer.primitives import Sampler as AerSampler
+
+from qiskit_algorithms.optimizers import COBYLA
+from qiskit_algorithms.utils import algorithm_globals
+
 from qiskit_machine_learning.algorithms.classifiers import VQC
 
 from qiskit_neko import decorators

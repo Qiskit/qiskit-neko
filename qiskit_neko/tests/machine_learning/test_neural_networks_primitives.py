@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022.
+# (C) Copyright IBM 2022, 2023.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -18,6 +18,7 @@ from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
 from qiskit.primitives import Sampler as ReferenceSampler, Estimator as ReferenceEstimator
 from qiskit.quantum_info import SparsePauliOp
+
 from qiskit_aer.primitives import Sampler as AerSampler, Estimator as AerEstimator
 from qiskit_machine_learning.neural_networks import SamplerQNN, EstimatorQNN
 
