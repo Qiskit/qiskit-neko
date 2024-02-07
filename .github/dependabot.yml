@@ -5,14 +5,6 @@
 
 version: 2
 updates:
-  - package-ecosystem: "cargo" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "daily"
-    labels:
-      - "Rust"
-      - "dependencies"
-      - "Changelog: None"
   - package-ecosystem: "github-actions"
     directory: "/"
     groups:
