@@ -31,6 +31,7 @@ runs:
         path: repo_under_test
     - name: Install repo under test
       run: |
+        set -e
         pushd repo_under_test
         ${{ inputs.repo_install_command }}
         popd
@@ -39,6 +40,7 @@ runs:
       env:
         PYTHONWARNINGS: default
       run: |
+        set -e
         cd qiskit-neko
         stestr run ${{ inputs.test_selection }}
       shell: bash
