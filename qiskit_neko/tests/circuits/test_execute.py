@@ -15,7 +15,7 @@
 import math
 
 from qiskit.circuit import QuantumCircuit
-from qiskit import execute
+from qiskit import transpile
 
 from qiskit_neko import decorators
 from qiskit_neko.tests import base
@@ -40,7 +40,7 @@ class TestExecute(base.BaseTestCase):
         circuit.h(0)
         circuit.cx(0, 1)
         circuit.measure_all()
-        job = execute(circuit, self.backend, shots=100)
+        job = self.backend.run(transpile(circuit, self.backend), shots=100)
         result = job.result()
         counts = result.get_counts()
         self.assertDictAlmostEqual(counts, {"00": 50, "11": 50}, delta=10)
@@ -53,7 +53,7 @@ class TestExecute(base.BaseTestCase):
         circuit.cx(0, 1)
         circuit.measure_all()
         expected_count = self.backend.options.shots / 2
-        job = execute(circuit, self.backend)
+        job = self.backends.run(transpile(circuit, self.backend))
         result = job.result()
         counts = result.get_counts()
         delta = 10 ** (math.log10(self.backend.options.shots) - 1)
@@ -69,7 +69,7 @@ class TestExecute(base.BaseTestCase):
         circuit.cx(0, 1)
         circuit.measure_all()
         self.backend.set_options(shots=100)
-        job = execute(circuit, self.backend)
+        job = self.backend.run(transpile(circuit, self.backend))
         result = job.result()
         counts = result.get_counts()
         self.assertDictAlmostEqual(counts, {"00": 50, "11": 50}, delta=10)
