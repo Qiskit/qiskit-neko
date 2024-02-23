@@ -62,7 +62,7 @@ setup(
     python_requires=">=3.8",
     project_urls={
         "Bug Tracker": "https://github.com/Qiskit/qiskit-neko/issues",
-        "Documentation": "https://qiskit.org/documentation/",
+        "Documentation": "https://qiskit.org/ecosystem/neko",
         "Source Code": "https://github.com/Qiskit/qiskit-neko",
     },
     zip_safe=False,
