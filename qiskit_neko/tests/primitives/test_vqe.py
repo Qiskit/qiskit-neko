@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022, 2023.
+# (C) Copyright IBM 2022, 2024.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -35,7 +35,7 @@ class TestVQEPrimitives(base.BaseTestCase):
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
-    @decorators.component_attr("terra", "backend")
+    @decorators.component_attr("terra", "backend", "algorithms")
     def test_sampling_vqe(self):
         """Test the execution of SamplingVQE with BackendSampler."""
         sampler = BackendSampler(self.backend)
@@ -48,7 +48,7 @@ class TestVQEPrimitives(base.BaseTestCase):
         expected = -1.38
         self.assertAlmostEqual(expected, eigenvalue, delta=0.3)
 
-    @decorators.component_attr("terra", "aer")
+    @decorators.component_attr("terra", "aer", "algorithms")
     def test_aer_sampling_vqe(self):
         """Test the aer sampler with SamplingVQE."""
         sampler = Sampler(backend_options={"seed_simulator": 42})
@@ -61,7 +61,7 @@ class TestVQEPrimitives(base.BaseTestCase):
         expected = -1.38
         self.assertAlmostEqual(expected, eigenvalue, delta=0.3)
 
-    @decorators.component_attr("terra", "backend")
+    @decorators.component_attr("terra", "backend", "algorithms")
     def test_vqe(self):
         """Test the execution of VQE with BackendEstimator."""
         estimator = BackendEstimator(self.backend)
@@ -74,7 +74,7 @@ class TestVQEPrimitives(base.BaseTestCase):
         expected = -1.38
         self.assertAlmostEqual(expected, eigenvalue, delta=0.3)
 
-    @decorators.component_attr("terra", "aer")
+    @decorators.component_attr("terra", "aer", "algorithms")
     def test_aer_vqe(self):
         """Test the execution of VQE with Aer Estimator."""
         estimator = Estimator(backend_options={"seed_simulator": 42})

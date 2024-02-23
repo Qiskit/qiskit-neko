@@ -4,6 +4,7 @@ qiskit-aer
 qiskit-nature[pyscf]
 qiskit-experiments
 qiskit-machine-learning
+qiskit-ibm-runtime>=0.19
 stestr>=3.2.0
 testtools>=2.5.0
 fixtures>=3.0.0
