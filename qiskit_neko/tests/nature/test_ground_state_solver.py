@@ -1,6 +1,6 @@
 # This code is part of Qiskit.
 #
-# (C) Copyright IBM 2022, 2023.
+# (C) Copyright IBM 2022, 2024.
 #
 # This code is licensed under the Apache License, Version 2.0. You may
 # obtain a copy of this license in the LICENSE.txt file in the root directory
@@ -34,7 +34,7 @@ class TestGroundStateSolvers(base.BaseTestCase):
         tuple(map(int, qiskit_nature.__version__.split(".")[:2])) < (0, 7),
         "This test is incompatible with qiskit_nature versions below 0.7.0",
     )
-    @decorators.component_attr("terra", "backend", "nature")
+    @decorators.component_attr("terra", "backend", "nature", "algorithms")
     def test_ground_state_solver(self):
         """Test the execution of a bell circuit with an explicit shot count."""
         driver = PySCFDriver(atom="H 0.0 0.0 0.0; H 0.0 0.0 0.735", basis="sto3g")
