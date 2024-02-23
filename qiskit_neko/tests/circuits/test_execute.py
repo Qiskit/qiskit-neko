@@ -53,7 +53,7 @@ class TestExecute(base.BaseTestCase):
         circuit.cx(0, 1)
         circuit.measure_all()
         expected_count = self.backend.options.shots / 2
-        job = self.backends.run(transpile(circuit, self.backend))
+        job = self.backend.run(transpile(circuit, self.backend))
         result = job.result()
         counts = result.get_counts()
         delta = 10 ** (math.log10(self.backend.options.shots) - 1)
