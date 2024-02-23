@@ -13,7 +13,7 @@
 """Qiskit Aer default backend plugin."""
 
 import qiskit_aer as aer
-from qiskit.providers import fake_provider
+from qiskit_ibm_runtime import fake_provider
 
 from qiskit_neko import backend_plugin
 
