@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/Qiskit/qiskit-neko.svg?style=popout-square)](https://opensource.org/licenses/Apache-2.0)
 
   - You can see the full rendered docs at:
-    <https://qiskit.org/ecosystem/neko>
+    https://qiskit.github.io/qiskit-neko/
 
 
 This repository contains integration tests for Qiskit. These tests are used
