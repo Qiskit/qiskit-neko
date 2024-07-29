@@ -19,7 +19,9 @@ runs:
         path: qiskit-neko
     - name: Update setuptools and pip
       run: |
-        pip install -U setuptools pip
+        # Temporary pin to avoid CI issues caused by setuptools 0.72.0
+        # See https://github.com/pypa/setuptools/issues/4519
+        pip install -U setuptools<0.72.0 pip
       shell: bash
     - name: Install neko and its dependencies
       run: |
