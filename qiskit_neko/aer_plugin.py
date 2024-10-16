@@ -13,7 +13,7 @@
 """Qiskit Aer default backend plugin."""
 
 import qiskit_aer as aer
-from qiskit_ibm_runtime import fake_provider
+from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
 
 from qiskit_neko import backend_plugin
 
@@ -23,7 +23,7 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
 
     def __init__(self):
         super().__init__()
-        self.mock_provider = fake_provider.FakeProvider()
+        self.mock_provider = FakeProviderForBackendV2()
         self.mock_provider_backend_names = set()
         for backend in self.mock_provider.backends():
             if backend.version == 1:
