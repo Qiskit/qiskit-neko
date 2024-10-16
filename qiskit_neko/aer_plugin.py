@@ -52,5 +52,5 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
             method = backend_selection.split("=")[1]
             return aer.AerSimulator(method=method)
         if backend_selection in self.mock_provider_backend_names:
-            return self.mock_provider.get_backend(backend_selection)
+            return self.mock_provider.backend(backend_selection)
         raise ValueError(f"Invalid selection string {backend_selection}.")
