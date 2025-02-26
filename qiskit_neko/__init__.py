@@ -13,4 +13,4 @@
 """qiskit-neko integration test suite."""
 
 
-from qiskit_neko.version import __version__
+from qiskit_neko.version import __version__ as __version__
