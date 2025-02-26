@@ -13,7 +13,6 @@
 """Test primitives with vqe."""
 
 from qiskit.circuit.library import TwoLocal
-from qiskit.primitives import BackendEstimator, BackendSampler
 from qiskit.quantum_info import SparsePauliOp
 
 from qiskit_algorithms import VQE, SamplingVQE
@@ -35,19 +34,6 @@ class TestVQEPrimitives(base.BaseTestCase):
         if hasattr(self.backend.options, "seed_simulator"):
             self.backend.set_options(seed_simulator=42)
 
-    @decorators.component_attr("terra", "backend", "algorithms")
-    def test_sampling_vqe(self):
-        """Test the execution of SamplingVQE with BackendSampler."""
-        sampler = BackendSampler(self.backend)
-        operator = SparsePauliOp(["ZZ", "IZ", "II"], coeffs=[1, -0.5, 0.12])
-        ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
-        optimizer = SPSA()
-        sampling_vqe = SamplingVQE(sampler, ansatz, optimizer)
-        result = sampling_vqe.compute_minimum_eigenvalue(operator)
-        eigenvalue = result.eigenvalue
-        expected = -1.38
-        self.assertAlmostEqual(expected, eigenvalue, delta=0.3)
-
     @decorators.component_attr("terra", "aer", "algorithms")
     def test_aer_sampling_vqe(self):
         """Test the aer sampler with SamplingVQE."""
@@ -56,19 +42,6 @@ class TestVQEPrimitives(base.BaseTestCase):
         ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
         optimizer = SPSA()
         sampling_vqe = SamplingVQE(sampler, ansatz, optimizer)
-        result = sampling_vqe.compute_minimum_eigenvalue(operator)
-        eigenvalue = result.eigenvalue
-        expected = -1.38
-        self.assertAlmostEqual(expected, eigenvalue, delta=0.3)
-
-    @decorators.component_attr("terra", "backend", "algorithms")
-    def test_vqe(self):
-        """Test the execution of VQE with BackendEstimator."""
-        estimator = BackendEstimator(self.backend)
-        operator = SparsePauliOp(["ZZ", "IZ", "II"], coeffs=[1, -0.5, 0.12])
-        ansatz = TwoLocal(rotation_blocks=["ry", "rz"], entanglement_blocks="cz")
-        optimizer = SPSA()
-        sampling_vqe = VQE(estimator, ansatz, optimizer)
         result = sampling_vqe.compute_minimum_eigenvalue(operator)
         eigenvalue = result.eigenvalue
         expected = -1.38
