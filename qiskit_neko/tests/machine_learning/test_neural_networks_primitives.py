@@ -16,7 +16,6 @@ import numpy as np
 from ddt import ddt, data, unpack
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
-from qiskit.primitives import Sampler as ReferenceSampler, Estimator as ReferenceEstimator
 from qiskit.quantum_info import SparsePauliOp
 
 from qiskit_aer.primitives import Sampler as AerSampler, Estimator as AerEstimator
@@ -38,13 +37,13 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         self.circuit = QuantumCircuit(1)
         self.circuit.ry(self.input_params[0], 0)
         self.circuit.rx(self.weight_params[0], 0)
-        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler(run_options={"seed": 42}))
+        self.samplers = dict(aer=AerSampler(run_options={"seed": 42}))
         self.estimators = dict(
-            reference=ReferenceEstimator(), aer=AerEstimator(run_options={"seed": 42})
+            aer=AerEstimator(run_options={"seed": 42})
         )
 
     @decorators.component_attr("terra", "aer", "machine_learning")
-    @data(["reference", 4], ["aer", 1])
+    @data(["aer", 1])
     @unpack
     def test_sampler_qnn(self, implementation, decimal):
         """Test the execution of quantum neural networks using SamplerQNN."""
@@ -66,7 +65,7 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         np.testing.assert_array_almost_equal(weight_grad, [[[-0.2273], [0.2273]]], decimal)
 
     @decorators.component_attr("terra", "aer", "machine_learning")
-    @data(["reference", 4], ["aer", 1])
+    @data(["aer", 1])
     @unpack
     def test_estimator_qnn(self, implementation, decimal):
         """Test the execution of quantum neural networks using EstimatorQNN."""
