@@ -1,6 +1,5 @@
 black~=22.0
-astroid==2.9.2
-pylint==2.12.2
+ruff==0.9.7
 Sphinx>=3.0.0
 qiskit-sphinx-theme
 sphinx-autodoc-typehints
