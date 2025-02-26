@@ -38,8 +38,6 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.extlinks',
               'sphinx.ext.todo',
               'sphinx.ext.viewcode',
-              'jupyter_sphinx',
-              'reno.sphinxext',
               'sphinx.ext.intersphinx',
               'qiskit_sphinx_theme',
              ]
