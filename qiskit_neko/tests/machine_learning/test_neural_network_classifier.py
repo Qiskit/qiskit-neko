@@ -14,6 +14,7 @@
 import numpy as np
 from ddt import ddt, data
 
+from qiskit.primitives import StatevectorSampler as ReferenceSampler
 from qiskit_aer.primitives import Sampler as AerSampler
 
 from qiskit_algorithms.optimizers import COBYLA
@@ -32,10 +33,10 @@ class TestNeuralNetworkClassifierOnPrimitives(base.BaseTestCase):
     def setUp(self):
         super().setUp()
 
-        self.samplers = dict(aer=AerSampler(run_options={"seed": 42}))
+        self.samplers = dict(reference=ReferenceSampler(), aer=AerSampler(run_options={"seed": 42}))
 
     @decorators.component_attr("terra", "aer", "machine_learning")
-    @data("aer")
+    @data("reference", "aer")
     def test_neural_network_classifier(self, implementation):
         """Test the execution of quantum neural networks using VQC."""
         rng = np.random.default_rng(seed=42)
