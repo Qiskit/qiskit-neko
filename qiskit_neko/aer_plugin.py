@@ -19,16 +19,22 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
     """A backend plugin for using qiskit-aer as the backend."""
 
     def __init__(self):
-        from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
+        try:
+            from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
+        except ImportError:
+            FakeProviderForBackendV2 = None
 
         super().__init__()
-        self.mock_provider = FakeProviderForBackendV2()
-        self.mock_provider_backend_names = set()
-        for backend in self.mock_provider.backends():
-            if backend.version == 1:
-                self.mock_provider_backend_names.add(backend.name())
-            elif backend.version == 2:
-                self.mock_provider_backend_names.add(backend.name)
+        if FakeProviderForBackendV2 is not None:
+            self.mock_provider = FakeProviderForBackendV2()
+            self.mock_provider_backend_names = set()
+            for backend in self.mock_provider.backends():
+                if backend.version == 1:
+                    self.mock_provider_backend_names.add(backend.name())
+                elif backend.version == 2:
+                    self.mock_provider_backend_names.add(backend.name)
+        else:
+            self.mock_provider = None
 
     def get_backend(self, backend_selection=None):
         """Return the Backend object to run tests on.
@@ -53,5 +59,7 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
             method = backend_selection.split("=")[1]
             return aer.AerSimulator(method=method)
         if backend_selection in self.mock_provider_backend_names:
+            if self.mock_provider is None:
+                raise ValueError(f"Invalid selection string {backend_selection}.")
             return self.mock_provider.backend(backend_selection)
         raise ValueError(f"Invalid selection string {backend_selection}.")
