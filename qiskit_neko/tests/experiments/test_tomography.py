@@ -11,21 +11,30 @@
 # that they have been altered from the originals.
 
 """Tests for quantum state tomography."""
+import unittest
 
-from qiskit_experiments.library import StateTomography
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import DensityMatrix, state_fidelity
 
 from qiskit_neko import decorators
 from qiskit_neko.tests import base
+import qiskit
 
 
 class TestQuantumStateTomography(base.BaseTestCase):
     """Tests adapted from circuit basics tutorial."""
 
+    @unittest.skipIf(
+        tuple(map(int, qiskit.__version__.split(".")[:2])) >= (2, 0),
+        "Skipping test until Qiskit Experiments is ready for Qiskit 2.0. "
+        "Tracked in: https://github.com/Qiskit/qiskit-neko/issues/54",
+    )
     @decorators.component_attr("terra", "backend", "experiment")
     def test_ghz_circuit_quantum_info(self):
         """Test state tomography of ghz state circuit"""
+
+        from qiskit_experiments.library import StateTomography
+
         nq = 3
         qc_ghz = QuantumCircuit(nq)
         qc_ghz.h(0)
