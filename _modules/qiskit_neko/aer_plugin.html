@@ -270,16 +270,22 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A backend plugin for using qiskit-aer as the backend.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeProviderForBackendV2</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeProviderForBackendV2</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">FakeProviderForBackendV2</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span> <span class="o">=</span> <span class="n">FakeProviderForBackendV2</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span><span class="o">.</span><span class="n">backends</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">backend</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
-            <span class="k">elif</span> <span class="n">backend</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">FakeProviderForBackendV2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span> <span class="o">=</span> <span class="n">FakeProviderForBackendV2</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span><span class="o">.</span><span class="n">backends</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">backend</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+                <span class="k">elif</span> <span class="n">backend</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="AerBackendPlugin.get_backend">
 <a class="viewcode-back" href="../../apiref/qiskit_neko.aer_plugin.AerBackendPlugin.get_backend.html#qiskit_neko.aer_plugin.AerBackendPlugin.get_backend">[docs]</a>
@@ -306,6 +312,8 @@
             <span class="n">method</span> <span class="o">=</span> <span class="n">backend_selection</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">aer</span><span class="o">.</span><span class="n">AerSimulator</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">backend_selection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid selection string </span><span class="si">{</span><span class="n">backend_selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">backend_selection</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid selection string </span><span class="si">{</span><span class="n">backend_selection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 </div>
