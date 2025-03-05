@@ -1,5 +1,4 @@
 qiskit
-qiskit-algorithms
 qiskit-aer
 qiskit-nature[pyscf]
 qiskit-experiments
