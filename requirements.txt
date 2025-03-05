@@ -1,6 +1,5 @@
 qiskit
 qiskit-aer
-qiskit-nature[pyscf]
 qiskit-experiments
 qiskit-machine-learning
 qiskit-ibm-runtime>=0.19
