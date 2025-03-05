@@ -17,8 +17,8 @@ from ddt import ddt, data
 from qiskit.primitives import StatevectorSampler as ReferenceSampler
 from qiskit_aer.primitives import Sampler as AerSampler
 
-from qiskit_algorithms.optimizers import COBYLA
-from qiskit_algorithms.utils import algorithm_globals
+from qiskit_machine_learning.optimizers import COBYLA
+from qiskit_machine_learning.utils import algorithm_globals
 
 from qiskit_machine_learning.algorithms.classifiers import VQC
 
