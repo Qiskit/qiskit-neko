@@ -41,7 +41,9 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         self.circuit = QuantumCircuit(1)
         self.circuit.ry(self.input_params[0], 0)
         self.circuit.rx(self.weight_params[0], 0)
-        self.samplers = dict(reference=ReferenceSampler(seed=42), aer=AerSampler(run_options={"seed": 42}))
+        self.samplers = dict(
+            reference=ReferenceSampler(seed=42), aer=AerSampler(run_options={"seed": 42})
+        )
         self.estimators = dict(
             reference=ReferenceEstimator(seed=42), aer=AerEstimator(run_options={"seed": 42})
         )
