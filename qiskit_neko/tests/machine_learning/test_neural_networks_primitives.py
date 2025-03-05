@@ -14,16 +14,16 @@
 
 import numpy as np
 from ddt import ddt, data, unpack
+import unittest
+
+from qiskit import __version__ as qiskit_version
 from qiskit import QuantumCircuit
 from qiskit.circuit import Parameter
 from qiskit.quantum_info import SparsePauliOp
-
 from qiskit.primitives import (
     StatevectorSampler as ReferenceSampler,
     StatevectorEstimator as ReferenceEstimator,
 )
-from qiskit_aer.primitives import Sampler as AerSampler, Estimator as AerEstimator
-from qiskit_machine_learning.neural_networks import SamplerQNN, EstimatorQNN
 
 from qiskit_neko import decorators
 from qiskit_neko.tests import base
@@ -33,8 +33,15 @@ from qiskit_neko.tests import base
 class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
     """Test adapted from the qiskit_machine_learning tutorials."""
 
+    @unittest.skipIf(
+        tuple(map(int, qiskit_version.split(".")[:2])) >= (2, 0),
+        "Skipping test until Qiskit Aer and Machine Learning are ready for Qiskit 2.0. "
+        "Tracked in: https://github.com/Qiskit/qiskit-neko/issues/54",
+    )
     def setUp(self):
         super().setUp()
+
+        from qiskit_aer.primitives import Sampler as AerSampler, Estimator as AerEstimator
 
         self.input_params = [Parameter("x")]
         self.weight_params = [Parameter("w")]
@@ -48,11 +55,18 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
             reference=ReferenceEstimator(seed=42), aer=AerEstimator(run_options={"seed": 42})
         )
 
+    @unittest.skipIf(
+        tuple(map(int, qiskit_version.split(".")[:2])) >= (2, 0),
+        "Skipping test until Qiskit Aer and Machine Learning are ready for Qiskit 2.0. "
+        "Tracked in: https://github.com/Qiskit/qiskit-neko/issues/54",
+    )
     @decorators.component_attr("terra", "aer", "machine_learning")
     @data(["reference", 2], ["aer", 1])
     @unpack
     def test_sampler_qnn(self, implementation, decimal):
         """Test the execution of quantum neural networks using SamplerQNN."""
+        from qiskit_machine_learning.neural_networks import SamplerQNN
+
         sampler = self.samplers[implementation]
 
         qnn = SamplerQNN(
@@ -70,11 +84,18 @@ class TestNeuralNetworksOnPrimitives(base.BaseTestCase):
         np.testing.assert_array_almost_equal(input_grad, [[[-0.2273], [0.2273]]], decimal)
         np.testing.assert_array_almost_equal(weight_grad, [[[-0.2273], [0.2273]]], decimal)
 
+    @unittest.skipIf(
+        tuple(map(int, qiskit_version.split(".")[:2])) >= (2, 0),
+        "Skipping test until Qiskit Aer and Machine Learning are ready for Qiskit 2.0. "
+        "Tracked in: https://github.com/Qiskit/qiskit-neko/issues/54",
+    )
     @decorators.component_attr("terra", "aer", "machine_learning")
     @data(["reference", 2], ["aer", 1])
     @unpack
     def test_estimator_qnn(self, implementation, decimal):
         """Test the execution of quantum neural networks using EstimatorQNN."""
+        from qiskit_machine_learning.neural_networks import EstimatorQNN
+
         estimator = self.estimators[implementation]
 
         qnn = EstimatorQNN(

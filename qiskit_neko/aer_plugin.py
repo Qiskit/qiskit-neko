@@ -12,9 +12,6 @@
 
 """Qiskit Aer default backend plugin."""
 
-import qiskit_aer as aer
-from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
-
 from qiskit_neko import backend_plugin
 
 
@@ -22,6 +19,8 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
     """A backend plugin for using qiskit-aer as the backend."""
 
     def __init__(self):
+        from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
+
         super().__init__()
         self.mock_provider = FakeProviderForBackendV2()
         self.mock_provider_backend_names = set()
@@ -46,6 +45,8 @@ class AerBackendPlugin(backend_plugin.BackendPlugin):
             the defailt settings.
         :raises ValueError: If an invalid backend selection string is passed in
         """
+        import qiskit_aer as aer
+
         if backend_selection is None:
             return aer.AerSimulator()
         if backend_selection.startswith("method="):
