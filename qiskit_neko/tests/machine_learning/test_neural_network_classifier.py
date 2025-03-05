@@ -14,7 +14,7 @@
 import numpy as np
 from ddt import ddt, data
 
-from qiskit.primitives import Sampler as ReferenceSampler
+from qiskit.primitives import StatevectorSampler as ReferenceSampler
 from qiskit_aer.primitives import Sampler as AerSampler
 
 from qiskit_algorithms.optimizers import COBYLA
