@@ -261,9 +261,6 @@
 
 <span class="sd">&quot;&quot;&quot;Qiskit Aer default backend plugin.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeProviderForBackendV2</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_neko</span><span class="w"> </span><span class="kn">import</span> <span class="n">backend_plugin</span>
 
 
@@ -273,6 +270,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A backend plugin for using qiskit-aer as the backend.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeProviderForBackendV2</span>
+
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider</span> <span class="o">=</span> <span class="n">FakeProviderForBackendV2</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mock_provider_backend_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -299,6 +298,8 @@
 <span class="sd">            the defailt settings.</span>
 <span class="sd">        :raises ValueError: If an invalid backend selection string is passed in</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qiskit_aer</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aer</span>
+
         <span class="k">if</span> <span class="n">backend_selection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">aer</span><span class="o">.</span><span class="n">AerSimulator</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">backend_selection</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;method=&quot;</span><span class="p">):</span>
