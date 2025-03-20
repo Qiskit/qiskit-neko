@@ -19,7 +19,7 @@ runs:
         path: qiskit-neko
     - name: Update setuptools and pip
       run: |
-        pip install -U setuptools pip
+        pip install -U setuptools pip packaging
       shell: bash
 
     - name: Install neko and its dependencies
