@@ -7,7 +7,7 @@
 
 
 This repository contains integration tests for Qiskit. These tests are used
-for primarily for two purposes as backwards compatibility testing for Qiskit
+primarily for two purposes: as backwards compatibility testing for Qiskit
 to validate that changes proposed to any Qiskit project do not break
 functionality from previous release and to validate that functionality works
 as expected with different providers. A provider in Qiskit is a package that
@@ -18,7 +18,7 @@ objects that provide an interface to Quantum hardware or a simulator.
 
 Currently qiskit-neko is not designed to run as a standalone package and you
 need to checkout the git source repository to run it. This is done to simplify
-the execution of the tests as qiskit-neko leverages the
+the execution of the tests as qiskit-neko leverages 
 [``stestr``](https://github.com/Qiskit/stestr) for the execution of its
 tests. To install qiskit-neko you need to first clone it with
 [git](https://git-scm.com/):
@@ -51,13 +51,13 @@ and this will install qiskit-neko into an isolated virtual environment and
 then run tests.
 
 If you don't wish to use tox to run tests. You can leverage ``stestr`` directly
-to execute tests. Simply running:
+to execute tests. Simply run:
 
 ```
 stestr run
 ```
 
-from the root of repository after installing qiskit-neko in your python
+from the root of the repository after installing qiskit-neko in your python
 environment.
 
 ## Qiskit Version compatibility
@@ -65,7 +65,7 @@ environment.
 Due to its use for backwards compatibility testing there are strict requirements
 on how we run CI for qiskit-neko. The qiskit-neko repository itself will only
 run CI on released versions of upstream dependencies. This includes Qiskit
-itself and other qiskit projects that are included in the tests here. A test can
+itself and other Qiskit projects that are included in the tests here. A test can
 not be added to qiskit-neko unless it will work with a released version of a
 Qiskit component. All Qiskit components that contain tests in qiskit-neko must
 run qiskit-neko in their CI (only the subset of tests which use that component)
@@ -73,43 +73,43 @@ using the proposed dev versions. A cron job running from either stable branches
 or releases is recommend as well to ensure that nothing bit rots on code that
 doesn't change as frequently.
 
-If qiskit or any qiskit component starts supporting more than one release series
-at a time. Additional CI jobs should be added to qiskit-neko to ensure we have
+If Qiskit or any Qiskit component starts supporting more than one release series
+at a time, additional CI jobs should be added to qiskit-neko to ensure we have
 coverage of those multiple releases to ensure that functionality continues to
 work across all supported releases.
 
 This is done to ensure that backwards compatibility is maintained. Since
-qiskit-neko is an external project to the rest of qiskit, to make a change to
+qiskit-neko is an external project to the rest of Qiskit, to make a change to
 the tests you must push a pull request to qiskit-neko and qiskit-neko will only
 run CI from released version we validate the current functionality works. Then
 since all projects tested by qiskit-neko are required to run qiskit-neko on
-proposed changes we are checking that all the functionality we doesn't regress
+proposed changes we are checking that all the functionality we add doesn't regress
 with the proposed change applied.
 
 ### Downstream usage in testing
 
-The expecation is for any qiskit project that includes tests in qiskit-neko that
-they run in CI agains their ``main`` branch with a pre-merge CI job, while all
-other qiskit components are using **released** versions published on pypi. This
+The expectation is for any Qiskit project that includes tests in qiskit-neko that
+they run in CI against their ``main`` branch with a pre-merge CI job, while all
+other Qiskit components are using **released** versions published on pypi. This is
 for two reasons primarily. First it is done to ensure we're actually testing
 what users actually run and that any potential compatibility issues between
 released versions and a potential change are caught prior to a release. The
-API stabililty guarantees provided by Qiskit projects only apply at release and
+API stability guarantees provided by Qiskit projects only apply at release and
 for an integration test suite we only are concerned that we do not break
 compatibility with what users will be running and that there is an upgrade path
 for each project. Secondly, this is necessary because of limitations in the
-publically available CI systems on github. We do not have mechanisms in CI to
+publicly available CI systems on github. We do not have mechanisms in CI to
 enable co-gating or testing a PR with more than one proposed change applied (to
-1 or more repository) so if we were to enable bidirectional ci (where an
+1 or more repository) so if we were to enable bidirectional CI (where an
 upstream project is run from main at the same time as the project under test
 and vice versa) there is a high probability of having the job broken on both sides
 without a way to unblock it without merging a PR that does not have passing CI.
 
 ### Intentional API changes
 
-As many qiskit projects don't strictly adhere to the use of public APIs exposed
-by the upstream qiskit projects there are situations that come up where an
-intentional api change to fix a bug or other scenario results in a break of
+As many Qiskit projects don't strictly adhere to the use of public APIs exposed
+by the upstream Qiskit projects there are situations that come up where an
+intentional API change to fix a bug or other scenario results in a break of
 a downstream project. In such situations a careful procedure needs to be
 followed to acknowledge the change and ensure it's clearly documented both
 in the upstream project's release documentation as well as for the downstream
@@ -126,7 +126,7 @@ happens:
 3. Propose a PR and tracking issue to qiskit-neko that adds a skip on the test
    with a skip message that refers to the tracking issue. This skip will remain
    in place until #1 and #2 are included in a release.
-3a. If a test change is necessary propose that change along with the skip.
+   - If a test change is necessary propose that change along with the skip.
 4. When #1 and #2 are both released with the fix propose a PR removing the skip
    from qiskit-neko that closes the tracking issue.
 
