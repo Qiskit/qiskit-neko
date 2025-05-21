@@ -11,7 +11,7 @@ primarily for two purposes: as backwards compatibility testing for Qiskit
 to validate that changes proposed to any Qiskit project do not break
 functionality from previous release and to validate that functionality works
 as expected with different providers. A provider in Qiskit is a package that
-provides [backend](https://docs.quantum.ibm.com/api/qiskit/qiskit.providers.BackendV2)
+provides [backend](https://quantum.cloud.ibm.com/docs/api/qiskit/qiskit.providers.BackendV2)
 objects that provide an interface to Quantum hardware or a simulator.
 
 ## Installing qiskit-neko

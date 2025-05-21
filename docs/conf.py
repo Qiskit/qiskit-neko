@@ -70,5 +70,5 @@ html_title = f"{project} {release}"
 htmlhelp_basename = 'qiskit-neko'
 
 intersphinx_mapping = {
-    'qiskit': ('https://docs.quantum.ibm.com/api/qiskit/', None),
+    'qiskit': ('https://quantum.cloud.ibm.com/docs/api/qiskit/', None),
 }
